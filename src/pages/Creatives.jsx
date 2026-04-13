@@ -106,7 +106,8 @@ export default function Creatives() {
   };
 
   const handlePreview = (creative) => {
-    const url = `${SERVER_BASE}/uploads/creatives/${creative.media_url}`;
+    const cleanPath = creative.media_url || "";
+const url = `${SERVER_BASE}/uploads/creatives/${cleanPath}`;
 
     Swal.fire({
       title: `<span style="font-size: 1.1rem; font-weight: 700;">${creative.title}</span>`,
@@ -134,7 +135,8 @@ export default function Creatives() {
 
   const handleDownload = async (creative) => {
     try {
-      const url = `${SERVER_BASE}/uploads/creatives/${creative.media_url}`;
+      const cleanPath = creative.media_url || "";
+const url = `${SERVER_BASE}/uploads/creatives/${cleanPath}`;
 
       const response = await fetch(url);
       const blob = await response.blob();
@@ -143,7 +145,7 @@ export default function Creatives() {
       link.href = window.URL.createObjectURL(blob);
 
       // ✅ Better filename
-      link.download = `${creative.title}.${creative.media_url.split(".").pop()}`;
+      link.download = `${creative.title}.${cleanPath.split(".").pop()}`;
 
       document.body.appendChild(link);
       link.click();
