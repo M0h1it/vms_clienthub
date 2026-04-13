@@ -131,7 +131,7 @@ export default function Dashboard() {
                         tick={{ fill: '#999', fontSize: 12 }} 
                         dy={10}
                     />
-                    <YAxis axisLine={false} tickLine={false} tick={{ fill: '#999', fontSize: 12 }} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fill: '#999', fontSize: 12 }} allowDecimals={false} />
                     <Tooltip 
                         contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
                     />
