@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getLogs, checkOut } from "../services/visitorLogService";
 import { ClipboardList, User, FileText, Calendar, Clock, LogOut, Search, RefreshCw, Briefcase } from "lucide-react";
 
-const SERVER_BASE = import.meta.env.VITE_API_BASE_URL.replace(/\/api\/?$/, "");
+const SERVER_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace("/api", "");
 
 const getPhotoUrl = (photoUrl) => {
   if (!photoUrl) return null;

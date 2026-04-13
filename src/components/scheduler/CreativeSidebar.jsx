@@ -7,7 +7,7 @@ import {
   FaRegFileImage
 } from "react-icons/fa";
 
-const SERVER_BASE = import.meta.env.VITE_API_BASE_URL.replace("/api", "");
+const SERVER_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace("/api", "");
 
 export default function CreativeSidebar({ creatives }) {
 
