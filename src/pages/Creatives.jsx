@@ -34,11 +34,14 @@ export default function Creatives() {
   const getCreativeUrl = (path) => {
   if (!path) return "";
 
-  // remove duplicate uploads/creatives if already present
-  const cleanPath = path
+  let cleanPath = path
     .replace(/^\/+/, "")
-    .replace(/\\/g, "/")
-    .replace(/^uploads\/creatives\/+/i, "uploads/creatives/");
+    .replace(/\\/g, "/");
+
+  // 🔥 FIX OLD DATA
+  if (!cleanPath.startsWith("uploads/")) {
+    cleanPath = `uploads/creatives/${cleanPath}`;
+  }
 
   return `${SERVER_BASE}/${cleanPath}`;
 };

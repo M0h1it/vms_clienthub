@@ -8,6 +8,20 @@ import {
 } from "react-icons/fa";
 
 const SERVER_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace("/api", "");
+const getCreativeUrl = (path) => {
+  if (!path) return "";
+
+  let cleanPath = path
+    .replace(/^\/+/, "")
+    .replace(/\\/g, "/");
+
+  // 🔥 Fix old + new data both
+  if (!cleanPath.startsWith("uploads/")) {
+    cleanPath = `uploads/creatives/${cleanPath}`;
+  }
+
+  return `${SERVER_BASE}/${cleanPath}`;
+};
 
 export default function CreativeSidebar({ creatives }) {
 
@@ -89,7 +103,7 @@ export default function CreativeSidebar({ creatives }) {
 
           filtered.map(c => {
 
-            const url = `${SERVER_BASE}/uploads/creatives/${c.media_url}`;
+            const url = getCreativeUrl(c.media_url);
 
             return (
 

@@ -16,21 +16,17 @@ import {
 
 export default function CalendarScheduler({ device, mode, events, reload }) {
   const calendarRef = useRef();
-
-  const formatLocalDateTime = (date) => {
-    if (!date) return "";
-
-    const pad = (n) => String(n).padStart(2, "0");
-
-    const year = date.getFullYear();
-    const month = pad(date.getMonth() + 1);
-    const day = pad(date.getDate());
-
-    const hours = pad(date.getHours());
-    const minutes = pad(date.getMinutes());
-
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  };
+const formatLocalDateTime = (date) => {
+  if (!date) return "";
+  const pad = (n) => String(n).padStart(2, "0");
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+ const localToUtc = (localStr) => new Date(localStr).toISOString();
   /* ---------------- DROP CREATIVE ---------------- */
 
   const handleEventReceive = useCallback(
@@ -123,8 +119,8 @@ info.event.remove();
     device_ids: [device.id],
     creative_id: creativeId,
     duration: value.duration,
-    start_time: formatLocalDateTime(start),
-    end_time: value.end,
+    start_time: localToUtc(formatLocalDateTime(start)),
+    end_time: localToUtc(value.end),
     mode: "overwrite",
   });
 } else {
@@ -132,8 +128,8 @@ info.event.remove();
     device_id: device.id,
     office_id: device.office_id,
     creative_id: creativeId,
-    start_time: formatLocalDateTime(start),
-    end_time: value.end,
+    start_time: localToUtc(formatLocalDateTime(start)), // ✅
+  end_time: localToUtc(value.end),
     duration: value.duration,
     mode: "playalong",
   });
@@ -257,8 +253,8 @@ info.event.remove();
         if (!isConfirmed || !value) return;
 
         await updateSchedule(event.id, {
-          start_time: value.start,
-          end_time: value.end,
+          start_time: localToUtc(value.start),
+          end_time: localToUtc(value.end),
           duration: value.duration ? Number(value.duration) : null,
         });
 
@@ -278,8 +274,8 @@ info.event.remove();
 
     try {
       await updateSchedule(event.id, {
-        start_time: formatLocalDateTime(event.start),
-        end_time: formatLocalDateTime(event.end),
+        start_time: localToUtc(formatLocalDateTime(event.start)),
+        end_time: localToUtc(formatLocalDateTime(event.end)),
         duration: event.extendedProps.duration,
       });
 
@@ -329,6 +325,7 @@ info.event.remove();
         eventChange={handleEventChange}
         eventContent={renderEventContent}
         eventDurationEditable={true}
+        timeZone="local"
 eventStartEditable={true}
 eventResizableFromStart={true}
 defaultTimedEventDuration="00:00:10"

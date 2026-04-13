@@ -221,12 +221,12 @@ export default function Scheduler() {
 
                   {/* SYNC INFO */}
 
-                  <div className="sync-info pt-3 border-top small text-muted">
+                  {/* <div className="sync-info pt-3 border-top small text-muted">
 
                     <FaHistory className="me-2" />
                     Last Sync: {lastSync ? lastSync.toLocaleString() : "Never"}
 
-                  </div>
+                  </div> */}
 
                 </div>
 
