@@ -22,6 +22,7 @@ import Swal from "sweetalert2";
 
 const SERVER_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace("/api", "");
 
+
 export default function Creatives() {
   const [creatives, setCreatives] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +31,17 @@ export default function Creatives() {
   const [activeTab, setActiveTab] = useState("all");
 
   const officeId = getOfficeId();
+  const getCreativeUrl = (path) => {
+  if (!path) return "";
+
+  // remove duplicate uploads/creatives if already present
+  const cleanPath = path
+    .replace(/^\/+/, "")
+    .replace(/\\/g, "/")
+    .replace(/^uploads\/creatives\/+/i, "uploads/creatives/");
+
+  return `${SERVER_BASE}/${cleanPath}`;
+};
 
   const [form, setForm] = useState({
     title: "",
@@ -106,8 +118,7 @@ export default function Creatives() {
   };
 
   const handlePreview = (creative) => {
-    const cleanPath = creative.media_url || "";
-const url = `${SERVER_BASE}/uploads/creatives/${cleanPath}`;
+const url = getCreativeUrl(creative.media_url);
 
     Swal.fire({
       title: `<span style="font-size: 1.1rem; font-weight: 700;">${creative.title}</span>`,
@@ -135,8 +146,8 @@ const url = `${SERVER_BASE}/uploads/creatives/${cleanPath}`;
 
   const handleDownload = async (creative) => {
     try {
-      const cleanPath = creative.media_url || "";
-const url = `${SERVER_BASE}/uploads/creatives/${cleanPath}`;
+      // const cleanPath = creative.media_url || "";
+const url = getCreativeUrl(creative.media_url);
 
       const response = await fetch(url);
       const blob = await response.blob();
@@ -252,7 +263,7 @@ const url = `${SERVER_BASE}/uploads/creatives/${cleanPath}`;
           </div>
         ) : (
           filtered.map((c) => {
-            const url = `${SERVER_BASE}/uploads/creatives/${c.media_url}`;
+            const url = getCreativeUrl(c.media_url);
             return (
               <div className="col-12 col-sm-6 col-lg-4" key={c.id}>
                 <div className="card shadow-sm h-100 border-0 creative-card overflow-hidden">
